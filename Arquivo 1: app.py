@@ -188,7 +188,7 @@ if submitted:
     # ------------------------------
     # Espaço entre os botões
     # ------------------------------
-    st.markdown("<div style='height:25px;'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:10px;'></div>", unsafe_allow_html=True)
 
     # ------------------------------
     # Botão "Refazer o formulário" (igual ao do WhatsApp)
