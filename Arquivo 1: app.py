@@ -146,7 +146,7 @@ if submitted:
     for sub, (score, interp) in subscale_results.items():
         st.write(f"- {sub}: {score} pontos - {interp}")
 
-    # ------------------------------
+        # ------------------------------
     # Botão estilizado de WhatsApp
     # ------------------------------
 
@@ -179,5 +179,10 @@ if submitted:
         }}
         </style>
 
-        <a class="custom-button" href="{whatsa
+        <a class="custom-button" href="{whatsapp_link}" target="_blank">
+            📩 Enviar resultado pelo WhatsApp
+        </a>
+    """, unsafe_allow_html=True)
 
+    # Espaço entre botões
+    st.markdown("<div style='height:25px;'></div>", unsafe_allow_html=True)
