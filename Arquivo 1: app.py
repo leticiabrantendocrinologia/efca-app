@@ -72,13 +72,13 @@ body, .stApp, .block-container, h1, h2, h3, h4, h5, h6, p, label, .css-1kyxreq {
 banner_html = """
 <div style="
     width: 100%;
-    height: 220px;  
+    height: 260px;  
     position: relative;
     background-color: #f1e3d8;
 ">
     <img src="https://raw.githubusercontent.com/leticiabrantendocrinologia/efca-app/bf9fca05f3ee47c7425829cc2ebd26733e93b0d8/logo.png"
-         style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -40%);
-                height: 180px;">
+         style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -45%);
+                height: 220px;">
 </div>
 """
 components.html(banner_html, height=220)
