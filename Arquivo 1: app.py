@@ -170,7 +170,13 @@ if submitted:
     # Calcular resultados por subescala
     subscale_results = {}
     for sub, qs in subscales.items():
-        score = sum(score_map[responses[q]] for q in qs)
+        score = 0
+        for q in qs:
+            s = score_map[responses[q]]
+            # Pergunta 9 invertida
+            if q == "Tomo café da manhã todos os dias.":
+                s = (len(options) - 1) - s
+            score += s
         max_subscore = len(qs) * (len(options) - 1)
         interpretation = interpret_score(score, max_subscore)
         subscale_results[sub] = (score, interpretation)
