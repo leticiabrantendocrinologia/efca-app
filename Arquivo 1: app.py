@@ -148,42 +148,42 @@ if submitted:
 
     # ------------------------------
 
-# Botão estilizado de WhatsApp
-# ------------------------------
+    # ------------------------------
+    # Botão estilizado de WhatsApp
+    # ------------------------------
 
-whatsapp_number = "+5531996515760"
-message = "Aqui está meu resultado EFCA:\n" + "\n".join(
-    [f"{sub}: {score} pontos - {interp}" for sub, (score, interp) in subscale_results.items()]
-)
-encoded_message = urllib.parse.quote(message)
-whatsapp_link = f"https://api.whatsapp.com/send?phone={whatsapp_number}&text={encoded_message}"
+    whatsapp_number = "5531996515760"
+    message = "Aqui está meu resultado EFCA:\n" + "\n".join(
+        [f"{sub}: {score} pontos - {interp}" for sub, (score, interp) in subscale_results.items()]
+    )
+    encoded_message = urllib.parse.quote(message)
+    whatsapp_link = f"https://api.whatsapp.com/send?phone={whatsapp_number}&text={encoded_message}"
 
-st.markdown(f"""
-    <style>
-    .whatsapp-button {{
-        background-color: #b3b795;
-        color: black !important;
-        padding: 0.8rem 1.4rem;
-        border-radius: 10px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 1.1rem;
-        font-weight: 600;
-        transition: 0.3s;
-        border: 2px solid #7d816e;
-    }}
-    .whatsapp-button:hover {{
-        background-color: #a4a986;
-        color: black !important;
-    }}
-    </style>
+    st.markdown(f"""
+        <style>
+        .whatsapp-button {{
+            background-color: #b3b795;
+            color: black !important;
+            padding: 0.8rem 1.4rem;
+            border-radius: 10px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            transition: 0.3s;
+            border: 2px solid #7d816e;
+        }}
+        .whatsapp-button:hover {{
+            background-color: #a4a986;
+            color: black !important;
+        }}
+        </style>
 
-    <a class="whatsapp-button" href="{whatsapp_link}" target="_blank">
-        📩 Enviar resultado pelo WhatsApp
-    </a>
-""", unsafe_allow_html=True)
-
+        <a class="whatsapp-button" href="{whatsapp_link}" target="_blank">
+            📩 Enviar resultado pelo WhatsApp
+        </a>
+    """, unsafe_allow_html=True)
 
     # ------------------------------
     # Botão para refazer
