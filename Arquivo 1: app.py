@@ -187,12 +187,13 @@ if submitted:
         st.write(f"- {sub}: {score} pontos — {interp}")
 
     # ------------------------------ # Botão WhatsApp # ------------------------------
-    msg = "Aqui está meu resultado EFCA:
-" + "
-".join(
-        [f"{s}: {v[0]} pontos - {v[1]}" for s, v in subscale_results.items()]
-    )
-    link = "https://api.whatsapp.com/send?phone=+5531996515760&text=" + urllib.parse.quote(msg)
+    msg = (
+    "Aqui está meu resultado EFCA:
+"
+    + "
+".join([f"{s}: {v[0]} pontos - {v[1]}" for s, v in subscale_results.items()])
+)
+link = "https://api.whatsapp.com/send?phone=+5531996515760&text=" + urllib.parse.quote(msg)
 
     st.markdown(
         f'<a class="custom-button" href="{link}" target="_blank">📩 Enviar resultado pelo WhatsApp</a>',
@@ -206,4 +207,3 @@ if submitted:
         '<a class="custom-button" href="#" onclick="window.location.reload();">🔄 Refazer o formulário</a>',
         unsafe_allow_html=True
     )
-
