@@ -72,7 +72,7 @@ body, .stApp, .block-container, h1, h2, h3, h4, h5, h6, p, label, .css-1kyxreq {
 banner_html = """
 <div style="
     width: 100%;
-    height: 300px;  /* altura do topo */
+    height: 220px;  
     position: relative;
     background-color: #f1e3d8;
 ">
@@ -88,7 +88,6 @@ components.html(banner_html, height=220)
 # ------------------------------
 st.title("Escala EFCA: Fenótipo de Comportamento Alimentar")
 
-# Referência científica
 st.markdown("""
 > **Questionário baseado em:**  
 > Pineda-Wieselberg RJ, Soares AH, Napoli TF, Sarto MLL, Anger V, Formoso J, Scalissi NM, Salles JEN.  
@@ -96,40 +95,50 @@ st.markdown("""
 > *Arch. Endocrinol. Metab.* 2025; ahead of print.
 """)
 
-# Crédito / Instagram
 st.markdown("""
 <p><strong>Criado por:</strong> <a href="https://www.instagram.com/leticiaendocrino/" target="_blank">@leticiaendocrino</a></p>
 """, unsafe_allow_html=True)
 
-# Descrição do questionário
 st.markdown("""
 Bem-vindo! Este questionário avalia aspectos do seu comportamento alimentar segundo a EFCA.
 Responda com sinceridade e clique em **Enviar** para ver seus resultados.
 """)
 
 # ------------------------------
-# Perguntas e opções EFCA
+# Perguntas e subescalas
 # ------------------------------
-questions = {
-    "Eu como rápido.": [],
-    "Eu como até me sentir desconfortável.": [],
-    "Eu como mesmo quando não estou com fome.": [],
-    "Eu sinto que perco o controle quando começo a comer.": [],
-    "Belisco comida ao longo do dia.": [],
-    "Eu como escondido.": [],
-    "Eu sinto fome intensa súbita.": [],
-    "Tenho dificuldade de parar de comer alimentos palatáveis.": [],
-    "Como para lidar com emoções negativas.": [],
-    "Tenho vontade incontrolável de comer certos alimentos.": [],
-    "Sinto que preciso comer para me acalmar.": [],
-    "Quando começo a comer, exagero sem perceber.": [],
-    "Eu como por tédio.": [],
-    "Como mais quando estou estressado(a).": [],
-    "Fico pensando em comida mesmo após já ter comido.": [],
-    "Busco comida mesmo sem necessidade fisiológica.": [],
-    "Fico ansiando por comida durante o dia.": [],
-    "Sinto culpa depois de comer em excesso.": [],
+# Aqui definimos as subescalas
+subscales = {
+    "Comer Emocional": [
+        "Como para lidar com emoções negativas.",
+        "Sinto que preciso comer para me acalmar.",
+        "Como mais quando estou estressado(a)."
+    ],
+    "Hiperfagia": [
+        "Eu como rápido.",
+        "Eu como até me sentir desconfortável.",
+        "Eu sinto fome intensa súbita."
+    ],
+    "Comer Hedônico": [
+        "Tenho dificuldade de parar de comer alimentos palatáveis.",
+        "Tenho vontade incontrolável de comer certos alimentos."
+    ],
+    "Comer Desorganizado": [
+        "Belisco comida ao longo do dia.",
+        "Eu como escondido.",
+        "Fico pensando em comida mesmo após já ter comido.",
+        "Busco comida mesmo sem necessidade fisiológica."
+    ],
+    "Comer Compulsivo": [
+        "Eu sinto que perco o controle quando começo a comer.",
+        "Quando começo a comer, exagero sem perceber.",
+        "Eu como por tédio.",
+        "Sinto culpa depois de comer em excesso."
+    ]
 }
+
+# Todas as perguntas
+questions = [q for sub in subscales.values() for q in sub]
 
 options = ["Nunca", "Raramente", "Às vezes", "Frequentemente", "Sempre"]
 score_map = {opt: i for i, opt in enumerate(options)}
@@ -146,40 +155,35 @@ with st.form("efca_form"):
 # ------------------------------
 # Processamento de resultados
 # ------------------------------
-if submitted:
-    total_score = sum(score_map[r] for r in responses.values())
-    max_score = len(questions) * (len(options) - 1)
+def interpret_score(score, max_score):
+    pct = score / max_score
+    if pct <= 0.33:
+        return "Baixo"
+    elif pct <= 0.66:
+        return "Moderado"
+    else:
+        return "Alto"
 
+if submitted:
     st.markdown("---")
     st.header("Resultado da EFCA")
-    st.subheader(f"Pontuação total: **{total_score} / {max_score}**")
 
-    # Barra de progresso
-    progress = total_score / max_score
-    st.progress(progress)
+    # Calcular resultados por subescala
+    subscale_results = {}
+    for sub, qs in subscales.items():
+        score = sum(score_map[responses[q]] for q in qs)
+        max_subscore = len(qs) * (len(options) - 1)
+        interpretation = interpret_score(score, max_subscore)
+        subscale_results[sub] = (score, interpretation)
 
-    # Interpretação
-    if total_score <= 18:
-        st.success("Baixo fenótipo de comportamento alimentar disfuncional.")
-    elif total_score <= 36:
-        st.warning("Fenótipo moderado / intermediário.")
-    else:
-        st.error("Alto fenótipo de comportamento alimentar disfuncional.")
-
-    # Mostrar respostas em duas colunas
-    st.markdown("**Suas respostas foram:**")
-    col1, col2 = st.columns(2)
-    items = list(responses.items())
-    for i, (q, resp) in enumerate(items):
-        if i % 2 == 0:
-            col1.write(f"- {q}: **{resp}**")
-        else:
-            col2.write(f"- {q}: **{resp}**")
+    # Mostrar resultados
+    st.markdown("**Resultados por subescala:**")
+    for sub, (score, interpretation) in subscale_results.items():
+        st.write(f"- {sub}: {score} pontos - {interpretation}")
 
     # Salvar respostas
     df = pd.DataFrame([{
         "data": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-        "pontuacao": total_score,
         **responses
     }])
     try:
@@ -190,7 +194,7 @@ if submitted:
     new.to_csv("efca_respostas.csv", index=False)
     st.write("✅ Suas respostas foram salvas.")
 
-    # Botão para exportar como CSV
+    # Botão para exportar CSV
     csv = new.to_csv(index=False).encode('utf-8')
     st.download_button(
         label="📥 Baixar resultados (CSV)",
@@ -199,6 +203,6 @@ if submitted:
         mime="text/csv"
     )
 
-    # Botão para resetar o formulário
+    # Botão para refazer
     if st.button("Refazer o formulário"):
         st.experimental_rerun()
