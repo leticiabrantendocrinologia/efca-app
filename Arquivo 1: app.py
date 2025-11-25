@@ -71,7 +71,7 @@ banner_html = """
 components.html(banner_html, height=300)
 
 # ------------------------------
-# Título e referência científica
+# Título, referência científica e crédito
 # ------------------------------
 st.title("Escala EFCA: Fenótipo de Comportamento Alimentar")
 
@@ -83,9 +83,12 @@ st.markdown("""
 > *Arch. Endocrinol. Metab.* 2025; ahead of print.
 """)
 
-# ------------------------------
-# Descrição
-# ------------------------------
+# Crédito / Instagram
+st.markdown("""
+**Criado por:** [@leticiaendocrino](https://www.instagram.com/leticiaendocrino/)
+""")
+
+# Descrição do questionário
 st.markdown("""
 Bem-vindo! Este questionário avalia aspectos do seu comportamento alimentar segundo a EFCA.
 Responda com sinceridade e clique em **Enviar** para ver seus resultados.
