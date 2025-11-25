@@ -23,19 +23,19 @@ st.markdown("""
 h1 {margin-top: 0.5rem;}
 body, .stApp, .block-container, label, p, h1, h2, h3, h4, h5, h6 {color: black !important;}
 
+
 /* ============================================================
-   🔧 AJUSTE DEFINITIVO DO BOTÃO "VER RESULTADO"
-   (Corrige no iPhone, Android, Safari e Chrome Mobile)
+   🔧 AJUSTE FINAL DO BOTÃO "VER RESULTADO"
+   (iPhone, Android, Safari e Chrome Mobile)
    ============================================================ */
 
-/* Reset agressivo do WebKit (iOS/Android) */
-button, .stButton button, div.stButton > button, button[kind="primary"] {
-    -webkit-appearance: none !important;
-    appearance: none !important;
-}
-
-/* Botão "Ver Resultado" com estilo igual aos demais */
-div.stButton > button, button[kind="primary"], .stButton button {
+/* Reset completo do botão padrão Streamlit */
+.stButton button {
+    all: unset !important;
+    display: block !important;
+    width: 100% !important;
+    text-align: center !important;
+    cursor: pointer !important;
     background-color: #b3b795 !important;
     color: black !important;
     border-radius: 10px !important;
@@ -43,18 +43,12 @@ div.stButton > button, button[kind="primary"], .stButton button {
     font-size: 1.1rem !important;
     font-weight: 600 !important;
     border: 2px solid #7d816e !important;
-    width: 100% !important;
-
-    box-shadow: none !important;
-    text-shadow: none !important;
+    box-sizing: border-box !important;
 }
 
 /* Hover */
-div.stButton > button:hover,
-button[kind="primary"]:hover,
 .stButton button:hover {
     background-color: #a4a986 !important;
-    color: black !important;
 }
 
 /* Botões finais (WhatsApp & Refazer) */
