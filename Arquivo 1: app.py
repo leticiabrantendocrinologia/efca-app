@@ -3,9 +3,6 @@
 # ------------------------------
 import streamlit as st
 import streamlit.components.v1 as components
-from PIL import Image, ImageDraw, ImageFont
-from datetime import datetime
-import io
 import urllib.parse
 
 # ------------------------------
@@ -15,36 +12,57 @@ st.set_page_config(
     page_title="EFCA – Comportamento Alimentar",
     page_icon="🍽️",
     layout="wide",
-    menu_items={
-        "About": "App EFCA para avaliação do fenótipo de comportamento alimentar."
-    }
+    menu_items={"About": "App EFCA para avaliação do fenótipo de comportamento alimentar."}
 )
 
 # ------------------------------
-# CSS personalizado
+# CSS personalizado (CORRIGIDO PARA CELULAR)
 # ------------------------------
 st.markdown("""
 <style>
+
 [data-testid="stAppViewContainer"] {background-color: #f1e3d8 !important;}
 [data-testid="stBlock"] > div {background-color: #f1e3d8 !important;}
 .block-container {background-color: #f1e3d8 !important; padding: 2rem 3rem; border-radius: 12px;}
 [data-testid="stSidebar"] {background-color: #f1e3d8 !important;}
 h1 {margin-top: 0.5rem;}
-body, .stApp, .block-container, h1, h2, h3, h4, h5, h6, p, label {color: black !important;}
+body, .stApp, .block-container, label, p, h1, h2, h3, h4, h5, h6 {color: black !important;}
 
-/* BOTÃO "VER RESULTADO" corrigido para celular */
-.stButton>button {
+/* ===== FIX DEFINITIVO PARA CELULAR (BOTÃO “VER RESULTADO”) ===== */
+div.stButton > button, button[kind="primary"], .stButton button {
     background-color: #b3b795 !important;
     color: black !important;
     border-radius: 10px !important;
     padding: 0.8rem 1.2rem !important;
     font-size: 1.1rem !important;
     border: 2px solid #7d816e !important;
+    width: 100% !important;
 }
-.stButton>button:hover {
+div.stButton > button:hover, button[kind="primary"]:hover, .stButton button:hover {
     background-color: #a4a986 !important;
     color: black !important;
 }
+
+/* Botões finais (WhatsApp & Refazer) */
+.custom-button {
+    background-color: #b3b795;
+    color: black !important;
+    padding: 0.8rem 1.4rem;
+    border-radius: 10px;
+    text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: 0.3s;
+    border: 2px solid #7d816e;
+    width: 100%;
+}
+.custom-button:hover {
+    background-color: #a4a986;
+    color: black !important;
+}
+
 </style>
 """, unsafe_allow_html=True)
 
@@ -77,7 +95,7 @@ st.markdown("""
 
 st.markdown("""
 Bem-vindo! Este questionário avalia aspectos do seu comportamento alimentar segundo a EFCA.
-Responda com sinceridade e clique em **Ver Resultado** para visualizar seu perfil.
+Responda com sinceridade e clique em **Ver Resultado** para visualizar suas subescalas.
 """)
 
 # ------------------------------
@@ -126,7 +144,7 @@ with st.form("efca_form"):
     submitted = st.form_submit_button("Ver Resultado")
 
 # ------------------------------
-# Função de interpretação
+# Processamento de resultados
 # ------------------------------
 def interpret_score(score, max_score):
     pct = score / max_score
@@ -137,13 +155,11 @@ def interpret_score(score, max_score):
     else:
         return "Alto"
 
-# ------------------------------
-# Processamento dos resultados
-# ------------------------------
 if submitted:
     st.markdown("---")
     st.header("Resultado da EFCA")
 
+    # Resultados por subescala
     subscale_results = {}
     for sub, qs in subscales.items():
         score = 0
@@ -157,50 +173,39 @@ if submitted:
 
     st.markdown("**Resultados por subescala:**")
     for sub, (score, interp) in subscale_results.items():
-        st.write(f"- {sub}: {score} pontos – {interp}")
+        st.write(f"- {sub}: {score} pontos — {interp}")
 
     # ------------------------------
-    # Link para WhatsApp
+    # Botão estilizado de WhatsApp
     # ------------------------------
     whatsapp_number = "+5531996515760"
     message = "Aqui está meu resultado EFCA:\n" + "\n".join(
-        [f"{sub}: {score} pontos – {interp}" for sub, (score, interp) in subscale_results.items()]
+        [f"{s}: {v[0]} pontos - {v[1]}" for s, v in subscale_results.items()]
     )
-    encoded_message = urllib.parse.quote(message)
-    whatsapp_link = f"https://api.whatsapp.com/send?phone={whatsapp_number}&text={encoded_message}"
+    whatsapp_link = (
+        f"https://api.whatsapp.com/send?phone={whatsapp_number}&text={urllib.parse.quote(message)}"
+    )
 
-    # Botão WhatsApp
-    st.markdown(f"""
-        <style>
-        .custom-button {{
-            background-color: #b3b795;
-            color: black !important;
-            padding: 0.8rem 1.4rem;
-            border-radius: 10px;
-            text-align: center;
-            text-decoration: none;
-            display: block;
-            font-size: 1.1rem;
-            font-weight: 600;
-            transition: 0.3s;
-            border: 2px solid #7d816e;
-            width: 100%;
-        }}
-        .custom-button:hover {{
-            background-color: #a4a986;
-            color: black !important;
-        }}
-        </style>
+    st.markdown(
+        f"""
+        <a class="custom-button" href="{whatsapp_link}" target="_blank">
+            📩 Enviar resultado pelo WhatsApp
+        </a>
+        """,
+        unsafe_allow_html=True,
+    )
 
-        <a class="custom-button" href="{whatsapp_link}" target="_blank">📩 Enviar resultado pelo WhatsApp</a>
-    """, unsafe_allow_html=True)
+    # Menor espaço entre botões
+    st.markdown("<div style='height:10px;'></div>", unsafe_allow_html=True)
 
-    # Espaço reduzido
-    st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
-
-    # Botão de refazer
-    st.markdown("""
+    # ------------------------------
+    # Botão "Refazer o formulário"
+    # ------------------------------
+    st.markdown(
+        """
         <a class="custom-button" href="#" onclick="window.location.reload();">
             🔄 Refazer o formulário
         </a>
-    """, unsafe_allow_html=True)
+        """,
+        unsafe_allow_html=True,
+    )
