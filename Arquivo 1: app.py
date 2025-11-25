@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # ------------------------------
-# CSS personalizado (CORRIGIDO PARA CELULAR)
+# CSS personalizado (corrigido para celular)
 # ------------------------------
 st.markdown("""
 <style>
@@ -28,13 +28,14 @@ st.markdown("""
 h1 {margin-top: 0.5rem;}
 body, .stApp, .block-container, label, p, h1, h2, h3, h4, h5, h6 {color: black !important;}
 
-/* ===== FIX DEFINITIVO PARA CELULAR (BOTÃO “VER RESULTADO”) ===== */
+/* ===== Botão "VER RESULTADO" – igual ao botão de WhatsApp ===== */
 div.stButton > button, button[kind="primary"], .stButton button {
     background-color: #b3b795 !important;
     color: black !important;
     border-radius: 10px !important;
-    padding: 0.8rem 1.2rem !important;
+    padding: 0.8rem 1.4rem !important;
     font-size: 1.1rem !important;
+    font-weight: 600 !important;
     border: 2px solid #7d816e !important;
     width: 100% !important;
 }
@@ -90,7 +91,8 @@ st.markdown("""
 """)
 
 st.markdown("""
-<p><strong>Criado por:</strong> <a href="https://www.instagram.com/leticiaendocrino/" target="_blank">@leticiaendocrino</a></p>
+<p><strong>Criado por:</strong> 
+<a href="https://www.instagram.com/leticiaendocrino/" target="_blank">@leticiaendocrino</a></p>
 """, unsafe_allow_html=True)
 
 st.markdown("""
@@ -159,53 +161,39 @@ if submitted:
     st.markdown("---")
     st.header("Resultado da EFCA")
 
-    # Resultados por subescala
     subscale_results = {}
     for sub, qs in subscales.items():
         score = 0
         for q in qs:
             s = score_map[responses[q]]
-            if q == "Tomo café da manhã todos os dias.":  # pontuação invertida
+            if q == "Tomo café da manhã todos os dias.":
                 s = (len(options) - 1) - s
             score += s
-        max_subscore = len(qs) * (len(options) - 1)
-        subscale_results[sub] = (score, interpret_score(score, max_subscore))
+        max_sub = len(qs) * (len(options) - 1)
+        subscale_results[sub] = (score, interpret_score(score, max_sub))
 
     st.markdown("**Resultados por subescala:**")
     for sub, (score, interp) in subscale_results.items():
         st.write(f"- {sub}: {score} pontos — {interp}")
 
     # ------------------------------
-    # Botão estilizado de WhatsApp
+    # Botão WhatsApp
     # ------------------------------
-    whatsapp_number = "+5531996515760"
-    message = "Aqui está meu resultado EFCA:\n" + "\n".join(
+    msg = "Aqui está meu resultado EFCA:\n" + "\n".join(
         [f"{s}: {v[0]} pontos - {v[1]}" for s, v in subscale_results.items()]
     )
-    whatsapp_link = (
-        f"https://api.whatsapp.com/send?phone={whatsapp_number}&text={urllib.parse.quote(message)}"
-    )
+    link = "https://api.whatsapp.com/send?phone=+5531996515760&text=" + urllib.parse.quote(msg)
 
-    st.markdown(
-        f"""
-        <a class="custom-button" href="{whatsapp_link}" target="_blank">
-            📩 Enviar resultado pelo WhatsApp
-        </a>
-        """,
-        unsafe_allow_html=True,
-    )
+    st.markdown(f'<a class="custom-button" href="{link}" target="_blank">📩 Enviar resultado pelo WhatsApp</a>',
+                unsafe_allow_html=True)
 
-    # Menor espaço entre botões
-    st.markdown("<div style='height:10px;'></div>", unsafe_allow_html=True)
+    # ▣ Agora com espaço ainda menor
+    st.markdown("<div style='height:5px;'></div>", unsafe_allow_html=True)
 
     # ------------------------------
-    # Botão "Refazer o formulário"
+    # Botão Refazer
     # ------------------------------
     st.markdown(
-        """
-        <a class="custom-button" href="#" onclick="window.location.reload();">
-            🔄 Refazer o formulário
-        </a>
-        """,
-        unsafe_allow_html=True,
+        """<a class="custom-button" href="#" onclick="window.location.reload();">🔄 Refazer o formulário</a>""",
+        unsafe_allow_html=True
     )
