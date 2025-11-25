@@ -1,164 +1,203 @@
+# ------------------------------ # Importações # ------------------------------
 import streamlit as st
+import streamlit.components.v1 as components
+import urllib.parse
 
-# =========================================================
-# CONFIGURAÇÕES INICIAIS DO APP
-# =========================================================
+# ------------------------------ # Configuração da página # ------------------------------
 st.set_page_config(
-    page_title="EFCA - Avaliação",
-    page_icon="🧠",
-    layout="centered"
+    page_title="EFCA – Comportamento Alimentar",
+    page_icon="🍽️",
+    layout="wide",
+    menu_items={"About": "App EFCA para avaliação do fenótipo de comportamento alimentar."}
 )
 
-st.title("🧠 Avaliação EFCA – Escala de Fome, Compulsão e Apetite")
-
-st.write("""
-Responda às perguntas abaixo e ao final clique em **VER RESULTADO**.
-""")
-
-
-# =========================================================
-# CSS COMPLETO — Inclua exatamente aqui
-# =========================================================
+# ------------------------------ # CSS personalizado (corrigido para celular) # ------------------------------
 st.markdown("""
 <style>
 
-/* Remove estilo nativo dos botões do iOS/Android */
+[data-testid="stAppViewContainer"] {background-color: #f1e3d8 !important;}
+[data-testid="stBlock"] > div {background-color: #f1e3d8 !important;}
+.block-container {background-color: #f1e3d8 !important; padding: 2rem 3rem; border-radius: 12px;}
+[data-testid="stSidebar"] {background-color: #f1e3d8 !important;}
+
+h1 {margin-top: 0.5rem;}
+body, .stApp, .block-container, label, p, h1, h2, h3, h4, h5, h6 {color: black !important;}
+
+/* ============================================================
+   🔧 AJUSTE DEFINITIVO DO BOTÃO "VER RESULTADO"
+   (Corrige no iPhone, Android, Safari e Chrome Mobile)
+   ============================================================ */
+
+/* Reset agressivo do WebKit (iOS/Android) */
 button, .stButton button, div.stButton > button, button[kind="primary"] {
     -webkit-appearance: none !important;
     appearance: none !important;
 }
 
-/* Botão padrão (inclui “Ver Resultado”) */
-.stButton button,
-div.stButton > button,
-button[kind="primary"] {
+/* Botão "Ver Resultado" com estilo igual aos demais */
+div.stButton > button, button[kind="primary"], .stButton button {
     background-color: #b3b795 !important;
     color: black !important;
     border-radius: 10px !important;
-    border: 2px solid #7d816e !important;
-    padding: 12px 20px !important;
-    font-size: 18px !important;
+    padding: 0.8rem 1.4rem !important;
+    font-size: 1.1rem !important;
     font-weight: 600 !important;
+    border: 2px solid #7d816e !important;
     width: 100% !important;
-    text-shadow: none !important;
+
     box-shadow: none !important;
+    text-shadow: none !important;
 }
 
 /* Hover */
-.stButton button:hover,
 div.stButton > button:hover,
-button[kind="primary"]:hover {
+button[kind="primary"]:hover,
+.stButton button:hover {
     background-color: #a4a986 !important;
     color: black !important;
 }
 
-/* Botões especiais */
-.whatsapp-btn {
-    background-color: #c8d2b0 !important;
-    border: 2px solid #7d816e !important;
-    color: #1a1a1a !important;
-    border-radius: 15px !important;
-    padding: 12px !important;
-    font-size: 20px !important;
-    width: 100% !important;
-    display: block;
+/* Botões finais (WhatsApp & Refazer) */
+.custom-button {
+    background-color: #b3b795;
+    color: black !important;
+    padding: 0.8rem 1.4rem;
+    border-radius: 10px;
     text-align: center;
+    text-decoration: none;
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 600;
+    transition: 0.3s;
+    border: 2px solid #7d816e;
+    width: 100%;
 }
-
-.refazer-btn {
-    background-color: #b3c29f !important;
-    border: 2px solid #7d816e !important;
-    color: #1a1a1a !important;
-    border-radius: 15px !important;
-    padding: 12px !important;
-    font-size: 20px !important;
-    width: 100% !important;
-    display: block;
-    text-align: center;
+.custom-button:hover {
+    background-color: #a4a986;
+    color: black !important;
 }
 
 </style>
 """, unsafe_allow_html=True)
 
+# ------------------------------ # Banner com logo # ------------------------------
+banner_html = """
+<div style="width:100%; height:300px; position:relative; background-color:#f1e3d8;">
+<img src="https://raw.githubusercontent.com/leticiabrantendocrinologia/efca-app/bf9fca05f3ee47c7425829cc2ebd26733e93b0d8/logo.png"
+     style="position:absolute; top:45%; left:50%; transform:translate(-50%, -45%); height:220px;">
+</div>
+"""
+components.html(banner_html, height=260)
 
+# ------------------------------ # Título, referência e crédito # ------------------------------
+st.title("Escala EFCA: Fenótipo de Comportamento Alimentar")
 
-# =========================================================
-# QUESTIONÁRIO EFCA
-# =========================================================
+st.markdown("""
+> **Questionário baseado em:**
+> Pineda-Wieselberg RJ, Soares AH, Napoli TF, Sarto MLL, Anger V, Formoso J, Scalissi NM, Salles JEN.
+> Validation for Brazilian Portuguese of the Eating Behavior Phenotypes Scale (EFCA): Confirmatory Factor Analysis and Psychometric Properties.
+> *Arch. Endocrinol. Metab.* 2025; ahead of print.
+""")
 
-st.subheader("Responda às perguntas")
+st.markdown("""
+<p><strong>Criado por:</strong>
+<a href="https://www.instagram.com/leticiaendocrino/" target="_blank">@leticiaendocrino</a></p>
+""", unsafe_allow_html=True)
 
-opcoes = ["Nunca", "Raramente", "Às vezes", "Frequentemente", "Sempre"]
-valores = {"Nunca": 0, "Raramente": 1, "Às vezes": 2, "Frequentemente": 3, "Sempre": 4}
+st.markdown("""
+Bem-vindo! Este questionário avalia aspectos do seu comportamento alimentar segundo a EFCA.
+Responda com sinceridade e clique em **Ver Resultado** para visualizar suas subescalas.
+""")
 
-# 5 domínios com perguntas de exemplo
-perguntas = {
+# ------------------------------ # Perguntas por subescala # ------------------------------
+subscales = {
     "Comer Emocional": [
-        "Eu como mais quando estou ansioso(a).",
-        "Eu como para lidar com tristeza."
+        "Acalmo as minhas emoções com comida.",
+        "Tenho o hábito de petiscar (petiscar = fazer pequenas refeições entre as refeições principais - café da manhã, almoço, café da tarde e jantar - sem medir a quantidade do que se come).",
+        "Faço lanches entre as refeições devido à ansiedade, tédio, solidão, medo, raiva, tristeza e/ou cansaço.",
+        "Como nos momentos em que estou: entediado, ansioso, nervoso, triste, cansado, irritado e solitário."
     ],
     "Comer Hiperfágico": [
-        "Eu como grandes quantidades rapidamente.",
-        "Tenho episódios de perda de controle alimentar."
+        "Eu como até ficar muito cheio.",
+        "Peço mais comida quando termino meu prato.",
+        "Costumo comer mais de um prato nas refeições principais."
     ],
     "Comer Desorganizado": [
-        "Pulo refeições com frequência.",
-        "Minha rotina alimentar é irregular."
+        "Tomo café da manhã todos os dias.",
+        "Pulo algumas - ou pelo menos uma - das refeições principais (café da manhã, almoço, café da tarde ou jantar).",
+        "Passo mais de 5 horas por dia sem comer."
     ],
     "Comer Hedônico": [
-        "Eu busco comida pelo prazer mesmo sem fome.",
-        "Eu penso em comida saborosa mesmo após comer."
+        "Quando começo a comer algo que gosto muito, tenho dificuldade em parar.",
+        "Sinto-me tentado a comer quando vejo/cheiro comida que gosto e/ou quando passo por um quiosque, uma padaria, uma pizzaria ou um estabelecimento de fast food.",
+        "Quando me deparo com uma comida que gosto muito, mesmo sem sentir fome, acabo comendo.",
+        "Quando como algo que gosto, finalizo toda a porção."
     ],
     "Comer Compulsivo": [
-        "Sinto urgência em comer que não consigo controlar.",
-        "Sinto necessidade de comer escondido(a)."
+        "Como muita comida em pouco tempo.",
+        "Quando como algo que gosto muito, como muito rápido."
     ]
 }
 
-respostas = {}
+questions = [q for sub in subscales.values() for q in sub]
 
-for dominio, itens in perguntas.items():
-    st.markdown(f"### **{dominio}**")
-    for i, item in enumerate(itens):
-        chave = f"{dominio}_{i}"
-        respostas[chave] = st.selectbox(item, opcoes, key=chave)
+options = ["Nunca", "Raramente", "Às vezes", "Frequentemente", "Sempre"]
+score_map = {opt: i for i, opt in enumerate(options)}
 
+responses = {}
 
-# =========================================================
-# BOTÃO PARA CALCULAR RESULTADO
-# =========================================================
+# ------------------------------ # Formulário EFCA # ------------------------------
+with st.form("efca_form"):
+    for q in questions:
+        responses[q] = st.radio(q, options)
+    submitted = st.form_submit_button("Ver Resultado")
 
-if st.button("Ver Resultado"):
-    st.header("📊 Resultado da EFCA")
+# ------------------------------ # Processamento de resultados # ------------------------------
+def interpret_score(score, max_score):
+    pct = score / max_score
+    if pct <= 0.33:
+        return "Baixo"
+    elif pct <= 0.66:
+        return "Moderado"
+    else:
+        return "Alto"
 
-    # Somatório por domínio
-    resultados = {}
+if submitted:
+    st.markdown("---")
+    st.header("Resultado da EFCA")
 
-    for dominio, itens in perguntas.items():
-        soma = sum(valores[respostas[f"{dominio}_{i}"]] for i in range(len(itens)))
-        resultados[dominio] = soma
+    subscale_results = {}
 
-    # Exibição
-    for dominio, score in resultados.items():
-        if score <= 2:
-            nivel = "Baixo"
-        elif score <= 5:
-            nivel = "Moderado"
-        else:
-            nivel = "Alto"
+    for sub, qs in subscales.items():
+        score = 0
+        for q in qs:
+            s = score_map[responses[q]]
+            if q == "Tomo café da manhã todos os dias.":
+                s = (len(options) - 1) - s
+            score += s
 
-        st.write(f"**{dominio}: {score} — {nivel}**")
+        max_sub = len(qs) * (len(options) - 1)
+        subscale_results[sub] = (score, interpret_score(score, max_sub))
 
-    st.divider()
+    st.markdown("**Resultados por subescala:**")
+    for sub, (score, interp) in subscale_results.items():
+        st.write(f"- {sub}: {score} pontos — {interp}")
 
-    # Botão WhatsApp
+    # ------------------------------ # Botão WhatsApp # ------------------------------
+    msg = "Aqui está meu resultado EFCA:\n" + "\n".join(
+        [f"{s}: {v[0]} pontos - {v[1]}" for s, v in subscale_results.items()]
+    )
+    link = "https://api.whatsapp.com/send?phone=+5531996515760&text=" + urllib.parse.quote(msg)
+
     st.markdown(
-        '<a href="https://wa.me/55" class="whatsapp-btn">📩 Enviar resultado pelo WhatsApp</a>',
+        f'<a class="custom-button" href="{link}" target="_blank">📩 Enviar resultado pelo WhatsApp</a>',
         unsafe_allow_html=True
     )
 
-    # Botão Refazer
+    st.markdown("<div style='height:5px;'></div>", unsafe_allow_html=True)
+
+    # ------------------------------ # Botão Refazer # ------------------------------
     st.markdown(
-        '<a href="/" class="refazer-btn">🔄 Refazer o formulário</a>',
+        """<a class="custom-button" href="#" onclick="window.location.reload();">🔄 Refazer o formulário</a>""",
         unsafe_allow_html=True
     )
