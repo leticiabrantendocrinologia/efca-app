@@ -59,7 +59,7 @@ st.markdown("""
 banner_html = """
 <div style="
     width: 100%;
-    height: 300px;  /* altura do topo */
+    height: 180px;  /* altura do topo */
     position: relative;
     background-color: #f1e3d8;  /* fundo igual ao da logo */
 ">
