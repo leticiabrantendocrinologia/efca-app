@@ -30,9 +30,6 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-# ---- LOGO NO TOPO ----
-st.image("https://drive.google.com/drive/u/0/my-drive", width=180)
-
 import streamlit as st
 import pandas as pd
 from datetime import datetime
