@@ -180,7 +180,7 @@ if submitted:
         score = 0
         for q in qs:
             s = score_map[responses[q]]
-            if q == "Tomo café da manhã todos os dias.":
+            if q == "Tomo café da manhã todos os dias.":  # pontuação invertida
                 s = (len(options)-1) - s
             score += s
         max_subscore = len(qs) * (len(options)-1)
@@ -238,7 +238,7 @@ if submitted:
     )
 
     # ------------------------------
-    # Gerar PNG
+    # Gerar PNG simples
     # ------------------------------
     img = Image.new('RGB', (600, 400), color=(241,227,216))
     d = ImageDraw.Draw(img)
@@ -264,7 +264,7 @@ if submitted:
     # ------------------------------
     # Link para WhatsApp profissional
     # ------------------------------
-    whatsapp_number = "5531996515760"
+    whatsapp_number = "5531996515760"  # seu número profissional
     message = "Aqui está meu resultado EFCA:\n" + "\n".join([f"{sub}: {score} pontos - {interp}" for sub, (score, interp) in subscale_results.items()])
     encoded_message = urllib.parse.quote(message)
     whatsapp_link = f"https://api.whatsapp.com/send?phone={whatsapp_number}&text={encoded_message}"
