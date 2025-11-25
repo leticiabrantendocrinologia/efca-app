@@ -110,7 +110,7 @@ responses = {}
 with st.form("efca_form"):
     for q in questions:
         responses[q] = st.radio(q, options)
-    submitted = st.form_submit_button("Enviar")
+    submitted = st.form_submit_button("Ver Resultado")
 
 # ------------------------------
 # Processamento de resultados
