@@ -173,7 +173,7 @@ if submitted:
     # ------------------------------
     # Link para WhatsApp profissional
     # ------------------------------
-    whatsapp_number = "5531996515760"
+    whatsapp_number = "+5531996515760"
     message = "Aqui está meu resultado EFCA:\n" + "\n".join([f"{sub}: {score} pontos - {interp}" for sub, (score, interp) in subscale_results.items()])
     encoded_message = urllib.parse.quote(message)
     whatsapp_link = f"https://api.whatsapp.com/send?phone={whatsapp_number}&text={encoded_message}"
