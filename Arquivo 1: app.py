@@ -72,7 +72,7 @@ body, .stApp, .block-container, h1, h2, h3, h4, h5, h6, p, label, .css-1kyxreq {
 banner_html = """
 <div style="
     width: 100%;
-    height: 220px;  /* altura do topo */
+    height: 380px;  /* altura do topo */
     position: relative;
     background-color: #f1e3d8;
 ">
