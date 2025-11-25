@@ -83,10 +83,10 @@ st.markdown("""
 > *Arch. Endocrinol. Metab.* 2025; ahead of print.
 """)
 
-# Crédito / Instagram
+# Crédito / Instagram (garante link clicável)
 st.markdown("""
-**Criado por:** [@leticiaendocrino](https://www.instagram.com/leticiaendocrino/)
-""")
+<p><strong>Criado por:</strong> <a href="https://www.instagram.com/leticiaendocrino/" target="_blank">@leticiaendocrino</a></p>
+""", unsafe_allow_html=True)
 
 # Descrição do questionário
 st.markdown("""
