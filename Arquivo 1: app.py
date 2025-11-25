@@ -50,37 +50,32 @@ st.markdown("""
     padding: 0.6rem 1.2rem !important;
     font-size: 1rem !important;
 }
-
-/* Diminui espaço acima do título */
-h1 {
-    margin-top: 0.5rem;
-}
 </style>
 """, unsafe_allow_html=True)
 
 # ------------------------------
-# Banner com logo (altura reduzida)
+# Banner com logo
 # ------------------------------
 banner_html = """
 <div style="
     width: 100%;
-    height: 220px;  /* diminuiu altura do topo */
+    height: 300px;  /* altura do topo */
     position: relative;
-    background-color: #f1e3d8;
+    background-color: #f1e3d8;  /* fundo igual ao da logo */
 ">
     <img src="https://raw.githubusercontent.com/leticiabrantendocrinologia/efca-app/bf9fca05f3ee47c7425829cc2ebd26733e93b0d8/logo.png"
-         style="position: absolute; top: 40%; left: 50%; transform: translate(-50%, -40%);
-                height: 180px;">  /* diminuiu tamanho da logo e subiu */
+         style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+                height: 250px;">
 </div>
 """
-components.html(banner_html, height=220)
+components.html(banner_html, height=300)
 
 # ------------------------------
 # Título, referência científica e crédito
 # ------------------------------
 st.title("Escala EFCA: Fenótipo de Comportamento Alimentar")
 
-# Referência científica
+# Referência científica abaixo do título
 st.markdown("""
 > **Questionário baseado em:**  
 > Pineda-Wieselberg RJ, Soares AH, Napoli TF, Sarto MLL, Anger V, Formoso J, Scalissi NM, Salles JEN.  
