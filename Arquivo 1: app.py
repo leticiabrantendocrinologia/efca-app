@@ -1,3 +1,11 @@
+st.markdown("""
+<style>
+/* Cor do texto em todo o app */
+body, .stApp, .block-container, h1, h2, h3, h4, h5, h6, p, label, .css-1kyxreq {
+    color: black !important;
+}
+</style>
+""", unsafe_allow_html=True)
 import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
