@@ -146,7 +146,7 @@ if submitted:
     for sub, (score, interp) in subscale_results.items():
         st.write(f"- {sub}: {score} pontos - {interp}")
 
-        # ------------------------------
+    # ------------------------------
     # Botão estilizado de WhatsApp
     # ------------------------------
 
@@ -166,12 +166,13 @@ if submitted:
             border-radius: 10px;
             text-align: center;
             text-decoration: none;
-            display: inline-block;
+            display: block;
             font-size: 1.1rem;
             font-weight: 600;
             transition: 0.3s;
             border: 2px solid #7d816e;
             width: 100%;
+            margin-top: 20px;
         }}
         .custom-button:hover {{
             background-color: #a4a986;
@@ -184,5 +185,16 @@ if submitted:
         </a>
     """, unsafe_allow_html=True)
 
-    # Espaço entre botões
+    # ------------------------------
+    # Espaço entre os botões
+    # ------------------------------
     st.markdown("<div style='height:25px;'></div>", unsafe_allow_html=True)
+
+    # ------------------------------
+    # Botão "Refazer o formulário" (igual ao do WhatsApp)
+    # ------------------------------
+    st.markdown("""
+        <a class="custom-button" href="#" onclick="window.location.reload();">
+            🔄 Refazer o formulário
+        </a>
+    """, unsafe_allow_html=True)
