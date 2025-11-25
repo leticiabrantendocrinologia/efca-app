@@ -105,35 +105,34 @@ Responda com sinceridade e clique em **Enviar** para ver seus resultados.
 """)
 
 # ------------------------------
-# Perguntas e subescalas
+# Perguntas e subescalas EFCA
 # ------------------------------
-# Aqui definimos as subescalas
 subscales = {
     "Comer Emocional": [
-        "Como para lidar com emoções negativas.",
-        "Sinto que preciso comer para me acalmar.",
-        "Como mais quando estou estressado(a)."
+        "Acalmo as minhas emoções com comida.",
+        "Tenho o hábito de petiscar (petiscar = fazer pequenas refeições entre as refeições principais - café da manhã, almoço, café da tarde e jantar - sem medir a quantidade do que se come).",
+        "Faço lanches entre as refeições devido à ansiedade, tédio, solidão, medo, raiva, tristeza e/ou cansaço.",
+        "Como nos momentos em que estou: entediado, ansioso, nervoso, triste, cansado, irritado e solitário."
     ],
-    "Hiperfagia": [
-        "Eu como rápido.",
-        "Eu como até me sentir desconfortável.",
-        "Eu sinto fome intensa súbita."
-    ],
-    "Comer Hedônico": [
-        "Tenho dificuldade de parar de comer alimentos palatáveis.",
-        "Tenho vontade incontrolável de comer certos alimentos."
+    "Comer Hiperfágico": [
+        "Eu como até ficar muito cheio.",
+        "Peço mais comida quando termino meu prato.",
+        "Costumo comer mais de um prato nas refeições principais."
     ],
     "Comer Desorganizado": [
-        "Belisco comida ao longo do dia.",
-        "Eu como escondido.",
-        "Fico pensando em comida mesmo após já ter comido.",
-        "Busco comida mesmo sem necessidade fisiológica."
+        "Tomo café da manhã todos os dias.",
+        "Pulo algumas - ou pelo menos uma - das refeições principais (café da manhã, almoço, café da tarde ou jantar).",
+        "Passo mais de 5 horas por dia sem comer."
+    ],
+    "Comer Hedônico": [
+        "Quando começo a comer algo que gosto muito, tenho dificuldade em parar.",
+        "Sinto-me tentado a comer quando vejo/cheiro comida que gosto e/ou quando passo por um quiosque, uma padaria, uma pizzaria ou um estabelecimento de fast food.",
+        "Quando me deparo com uma comida que gosto muito, mesmo sem sentir fome, acabo comendo.",
+        "Quando como algo que gosto, finalizo toda a porção."
     ],
     "Comer Compulsivo": [
-        "Eu sinto que perco o controle quando começo a comer.",
-        "Quando começo a comer, exagero sem perceber.",
-        "Eu como por tédio.",
-        "Sinto culpa depois de comer em excesso."
+        "Como muita comida em pouco tempo.",
+        "Quando como algo que gosto muito, como muito rápido."
     ]
 }
 
@@ -197,12 +196,4 @@ if submitted:
     # Botão para exportar CSV
     csv = new.to_csv(index=False).encode('utf-8')
     st.download_button(
-        label="📥 Baixar resultados (CSV)",
-        data=csv,
-        file_name="meus_resultados_efca.csv",
-        mime="text/csv"
-    )
-
-    # Botão para refazer
-    if st.button("Refazer o formulário"):
-        st.experimental_rerun()
+        label="📥 Baixar resultados (
