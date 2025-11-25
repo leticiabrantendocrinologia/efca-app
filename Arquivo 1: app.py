@@ -28,8 +28,13 @@ st.markdown("""
 h1 {margin-top: 0.5rem;}
 body, .stApp, .block-container, label, p, h1, h2, h3, h4, h5, h6 {color: black !important;}
 
-/* ===== Botão "VER RESULTADO" – igual ao botão de WhatsApp ===== */
-div.stButton > button, button[kind="primary"], .stButton button {
+
+/* ======================================================
+   BOTÃO "VER RESULTADO" — corrigido para celular
+   ====================================================== */
+.stButton button,
+div.stButton > button,
+button[kind="primary"] {
     background-color: #b3b795 !important;
     color: black !important;
     border-radius: 10px !important;
@@ -39,10 +44,14 @@ div.stButton > button, button[kind="primary"], .stButton button {
     border: 2px solid #7d816e !important;
     width: 100% !important;
 }
-div.stButton > button:hover, button[kind="primary"]:hover, .stButton button:hover {
+
+.stButton button:hover,
+div.stButton > button:hover,
+button[kind="primary"]:hover {
     background-color: #a4a986 !important;
     color: black !important;
 }
+
 
 /* Botões finais (WhatsApp & Refazer) */
 .custom-button {
@@ -187,7 +196,6 @@ if submitted:
     st.markdown(f'<a class="custom-button" href="{link}" target="_blank">📩 Enviar resultado pelo WhatsApp</a>',
                 unsafe_allow_html=True)
 
-    # ▣ Agora com espaço ainda menor
     st.markdown("<div style='height:5px;'></div>", unsafe_allow_html=True)
 
     # ------------------------------
