@@ -159,7 +159,7 @@ if submitted:
 
     st.markdown(f"""
         <style>
-        .whatsapp-button {{
+        .custom-button {{
             background-color: #b3b795;
             color: black !important;
             padding: 0.8rem 1.4rem;
@@ -171,25 +171,13 @@ if submitted:
             font-weight: 600;
             transition: 0.3s;
             border: 2px solid #7d816e;
+            width: 100%;
         }}
-        .whatsapp-button:hover {{
+        .custom-button:hover {{
             background-color: #a4a986;
             color: black !important;
         }}
         </style>
 
-        <a class="whatsapp-button" href="{whatsapp_link}" target="_blank">
-            📩 Enviar resultado pelo WhatsApp
-        </a>
-    """, unsafe_allow_html=True)
+        <a class="custom-button" href="{whatsa
 
-    # ------------------------------
-    # ESPAÇO ENTRE OS BOTÕES
-    # ------------------------------
-    st.markdown("<div style='height:25px'></div>", unsafe_allow_html=True)
-
-    # ------------------------------
-    # Botão para refazer
-    # ------------------------------
-    if st.button("Refazer o formulário"):
-        st.experimental_rerun()
