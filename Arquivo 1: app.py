@@ -147,12 +147,10 @@ if submitted:
         st.write(f"- {sub}: {score} pontos - {interp}")
 
     # ------------------------------
-
-    # ------------------------------
     # Botão estilizado de WhatsApp
     # ------------------------------
 
-    whatsapp_number = "5531996515760"
+    whatsapp_number = "+5531996515760"
     message = "Aqui está meu resultado EFCA:\n" + "\n".join(
         [f"{sub}: {score} pontos - {interp}" for sub, (score, interp) in subscale_results.items()]
     )
@@ -184,6 +182,11 @@ if submitted:
             📩 Enviar resultado pelo WhatsApp
         </a>
     """, unsafe_allow_html=True)
+
+    # ------------------------------
+    # ESPAÇO ENTRE OS BOTÕES
+    # ------------------------------
+    st.markdown("<div style='height:25px'></div>", unsafe_allow_html=True)
 
     # ------------------------------
     # Botão para refazer
