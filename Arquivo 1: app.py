@@ -29,9 +29,22 @@ st.markdown("""
 [data-testid="stBlock"] > div {background-color: #f1e3d8 !important;}
 .block-container {background-color: #f1e3d8 !important; padding: 2rem 3rem; border-radius: 12px;}
 [data-testid="stSidebar"] {background-color: #f1e3d8 !important;}
-.stButton>button {background-color: #556b2f !important; color: white !important; border-radius: 8px !important; padding: 0.6rem 1.2rem !important; font-size: 1rem !important;}
 h1 {margin-top: 0.5rem;}
-body, .stApp, .block-container, h1, h2, h3, h4, h5, h6, p, label, .css-1kyxreq {color: black !important;}
+body, .stApp, .block-container, h1, h2, h3, h4, h5, h6, p, label {color: black !important;}
+
+/* BOTÃO "VER RESULTADO" corrigido para celular */
+.stButton>button {
+    background-color: #b3b795 !important;
+    color: black !important;
+    border-radius: 10px !important;
+    padding: 0.8rem 1.2rem !important;
+    font-size: 1.1rem !important;
+    border: 2px solid #7d816e !important;
+}
+.stButton>button:hover {
+    background-color: #a4a986 !important;
+    color: black !important;
+}
 </style>
 """, unsafe_allow_html=True)
 
@@ -64,7 +77,7 @@ st.markdown("""
 
 st.markdown("""
 Bem-vindo! Este questionário avalia aspectos do seu comportamento alimentar segundo a EFCA.
-Responda com sinceridade e clique em **Enviar** para ver seus resultados.
+Responda com sinceridade e clique em **Ver Resultado** para visualizar seu perfil.
 """)
 
 # ------------------------------
@@ -113,7 +126,7 @@ with st.form("efca_form"):
     submitted = st.form_submit_button("Ver Resultado")
 
 # ------------------------------
-# Processamento de resultados
+# Função de interpretação
 # ------------------------------
 def interpret_score(score, max_score):
     pct = score / max_score
@@ -124,39 +137,39 @@ def interpret_score(score, max_score):
     else:
         return "Alto"
 
+# ------------------------------
+# Processamento dos resultados
+# ------------------------------
 if submitted:
     st.markdown("---")
     st.header("Resultado da EFCA")
 
-    # Resultados por subescala
     subscale_results = {}
     for sub, qs in subscales.items():
         score = 0
         for q in qs:
             s = score_map[responses[q]]
             if q == "Tomo café da manhã todos os dias.":  # pontuação invertida
-                s = (len(options)-1) - s
+                s = (len(options) - 1) - s
             score += s
-        max_subscore = len(qs) * (len(options)-1)
-        interpretation = interpret_score(score, max_subscore)
-        subscale_results[sub] = (score, interpretation)
+        max_subscore = len(qs) * (len(options) - 1)
+        subscale_results[sub] = (score, interpret_score(score, max_subscore))
 
-    # Mostrar resultados
     st.markdown("**Resultados por subescala:**")
     for sub, (score, interp) in subscale_results.items():
-        st.write(f"- {sub}: {score} pontos - {interp}")
+        st.write(f"- {sub}: {score} pontos – {interp}")
 
     # ------------------------------
-    # Botão estilizado de WhatsApp
+    # Link para WhatsApp
     # ------------------------------
-
     whatsapp_number = "+5531996515760"
     message = "Aqui está meu resultado EFCA:\n" + "\n".join(
-        [f"{sub}: {score} pontos - {interp}" for sub, (score, interp) in subscale_results.items()]
+        [f"{sub}: {score} pontos – {interp}" for sub, (score, interp) in subscale_results.items()]
     )
     encoded_message = urllib.parse.quote(message)
     whatsapp_link = f"https://api.whatsapp.com/send?phone={whatsapp_number}&text={encoded_message}"
 
+    # Botão WhatsApp
     st.markdown(f"""
         <style>
         .custom-button {{
@@ -172,7 +185,6 @@ if submitted:
             transition: 0.3s;
             border: 2px solid #7d816e;
             width: 100%;
-            margin-top: 20px;
         }}
         .custom-button:hover {{
             background-color: #a4a986;
@@ -180,19 +192,13 @@ if submitted:
         }}
         </style>
 
-        <a class="custom-button" href="{whatsapp_link}" target="_blank">
-            📩 Enviar resultado pelo WhatsApp
-        </a>
+        <a class="custom-button" href="{whatsapp_link}" target="_blank">📩 Enviar resultado pelo WhatsApp</a>
     """, unsafe_allow_html=True)
 
-    # ------------------------------
-    # Espaço entre os botões
-    # ------------------------------
-    st.markdown("<div style='height:1px;'></div>", unsafe_allow_html=True)
+    # Espaço reduzido
+    st.markdown("<div style='height:8px;'></div>", unsafe_allow_html=True)
 
-    # ------------------------------
-    # Botão "Refazer o formulário" (igual ao do WhatsApp)
-    # ------------------------------
+    # Botão de refazer
     st.markdown("""
         <a class="custom-button" href="#" onclick="window.location.reload();">
             🔄 Refazer o formulário
