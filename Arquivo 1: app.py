@@ -6,8 +6,7 @@ st.set_page_config(layout="wide")
 banner_html = """
 <div style="
     width: 100%;
-    height: 300px;
-    background-color: #b3b795;
+    height: 150px;
     position: relative;
 ">
     <img src="https://raw.githubusercontent.com/leticiabrantendocrinologia/efca-app/bf9fca05f3ee47c7425829cc2ebd26733e93b0d8/logo.png"
@@ -16,8 +15,9 @@ banner_html = """
 </div>
 """
 
-components.html(banner_html, height=300)
+components.html(banner_html, height=150)
 st.title("🧠 EFCA – Escala de Fenótipo de Comportamento Alimentar")
+
 
 import streamlit as st
 
