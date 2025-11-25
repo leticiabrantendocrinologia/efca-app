@@ -1,6 +1,7 @@
 import streamlit as st
 import streamlit.components.v1 as components
 
+# Configuração da página
 st.set_page_config(layout="wide")
 
 # HTML + CSS para banner com logo centralizada
@@ -11,16 +12,17 @@ banner_html = """
     background-color: #b3b795;
     position: relative;
 ">
-    <img src="https://raw.githubusercontent.com/SEU-USUARIO/efca-app/main/logo.png" 
+    <img src="https://drive.google.com/uc?export=view&id=1Lria329SbEPSFucDF8svJptJ8G92a5Gq" 
          style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
                 height: 120px;">
 </div>
 """
 
+# Renderiza o banner
 components.html(banner_html, height=300)
 
+# Título do app
 st.title("🧠 EFCA – Escala de Fenótipo de Comportamento Alimentar")
-
 import streamlit as st
 
 # ---- ESTILO PERSONALIZADO (FUNDO VERDE + AJUSTES DE LAYOUT) ----
