@@ -30,7 +30,7 @@ st.markdown("""
 }
 </style>
 """, unsafe_allow_html=True)
-st.image("Design sem nome (5).png", width=200)
+st.image("logo.png", width=200)
 import streamlit as st
 import pandas as pd
 from datetime import datetime
