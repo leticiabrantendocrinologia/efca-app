@@ -105,7 +105,7 @@ Responda com sinceridade e clique em **Enviar** para ver seus resultados.
 """)
 
 # ------------------------------
-# Perguntas e subescalas EFCA
+# Perguntas por subescala
 # ------------------------------
 subscales = {
     "Comer Emocional": [
@@ -196,4 +196,12 @@ if submitted:
     # Botão para exportar CSV
     csv = new.to_csv(index=False).encode('utf-8')
     st.download_button(
-        label="📥 Baixar resultados (
+        label="📥 Baixar resultados (CSV)",
+        data=csv,
+        file_name="meus_resultados_efca.csv",
+        mime="text/csv"
+    )
+
+    # Botão para refazer
+    if st.button("Refazer o formulário"):
+        st.experimental_rerun()
