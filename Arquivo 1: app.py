@@ -147,30 +147,6 @@ if submitted:
         st.write(f"- {sub}: {score} pontos - {interp}")
 
     # ------------------------------
-    # Gerar PNG simples
-    # ------------------------------
-    img = Image.new('RGB', (600, 400), color=(241,227,216))
-    d = ImageDraw.Draw(img)
-    font = ImageFont.load_default()
-    y = 20
-    d.text((20, y), "Resultado da EFCA", fill=(0,0,0))
-    y += 30
-    for sub, (score, interp) in subscale_results.items():
-        d.text((20, y), f"{sub}: {score} pontos - {interp}", fill=(0,0,0))
-        y += 25
-
-    img_buffer = io.BytesIO()
-    img.save(img_buffer, format='PNG')
-    img_buffer.seek(0)
-
-    st.download_button(
-        label="📥 Baixar resultado (PNG)",
-        data=img_buffer,
-        file_name="resultado_efca.png",
-        mime="image/png"
-    )
-
-    # ------------------------------
     # Link para WhatsApp profissional
     # ------------------------------
     whatsapp_number = "+5531996515760"
