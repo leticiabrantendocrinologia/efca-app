@@ -1,4 +1,36 @@
 import streamlit as st
+
+# ---- ESTILO PERSONALIZADO (FUNDO VERDE + AJUSTES DE LAYOUT) ----
+st.markdown("""
+<style>
+/* Fundo geral da página */
+.main {
+    background-color: #b3b795 !important; 
+}
+
+/* Caixa branca onde ficam os widgets */
+.stApp {
+    background-color: #b3b795 !important;
+}
+
+/* Cards e caixas internas padrão do Streamlit */
+.block-container {
+    background-color: #ffffffcc; /* branco com leve transparência */
+    padding: 2rem 3rem;
+    border-radius: 12px;
+}
+
+/* Estilo de botões */
+.stButton>button {
+    background-color: #556b2f !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 0.6rem 1.2rem !important;
+    font-size: 1rem !important;
+}
+</style>
+""", unsafe_allow_html=True)
+import streamlit as st
 import pandas as pd
 from datetime import datetime
 
