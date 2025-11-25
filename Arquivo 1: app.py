@@ -16,7 +16,7 @@ st.set_page_config(
 )
 
 # ------------------------------
-# CSS personalizado (corrigido para celular)
+# CSS personalizado (AJUSTADO DEFINITIVO PARA MOBILE)
 # ------------------------------
 st.markdown("""
 <style>
@@ -25,35 +25,31 @@ st.markdown("""
 [data-testid="stBlock"] > div {background-color: #f1e3d8 !important;}
 .block-container {background-color: #f1e3d8 !important; padding: 2rem 3rem; border-radius: 12px;}
 [data-testid="stSidebar"] {background-color: #f1e3d8 !important;}
-h1 {margin-top: 0.5rem;}
 body, .stApp, .block-container, label, p, h1, h2, h3, h4, h5, h6 {color: black !important;}
 
-
 /* ======================================================
-   BOTÃO "VER RESULTADO" — corrigido para celular
+   BOTÃO "VER RESULTADO" — SELETOR DEFINITIVO (FUNCIONA EM CELULAR)
    ====================================================== */
-.stButton button,
-div.stButton > button,
-button[kind="primary"] {
+form button, 
+form div.stButton > button,
+form button[type="submit"] {
     background-color: #b3b795 !important;
     color: black !important;
     border-radius: 10px !important;
-    padding: 0.8rem 1.4rem !important;
+    padding: 0.8rem 1.3rem !important;
     font-size: 1.1rem !important;
     font-weight: 600 !important;
     border: 2px solid #7d816e !important;
     width: 100% !important;
 }
 
-.stButton button:hover,
-div.stButton > button:hover,
-button[kind="primary"]:hover {
+form button:hover {
     background-color: #a4a986 !important;
-    color: black !important;
 }
 
-
-/* Botões finais (WhatsApp & Refazer) */
+/* ======================================================
+   Botões finais (WhatsApp & Refazer)
+   ====================================================== */
 .custom-button {
     background-color: #b3b795;
     color: black !important;
@@ -185,22 +181,15 @@ if submitted:
     for sub, (score, interp) in subscale_results.items():
         st.write(f"- {sub}: {score} pontos — {interp}")
 
-    # ------------------------------
-    # Botão WhatsApp
-    # ------------------------------
     msg = "Aqui está meu resultado EFCA:\n" + "\n".join(
         [f"{s}: {v[0]} pontos - {v[1]}" for s, v in subscale_results.items()]
     )
     link = "https://api.whatsapp.com/send?phone=+5531996515760&text=" + urllib.parse.quote(msg)
 
-    st.markdown(f'<a class="custom-button" href="{link}" target="_blank">📩 Enviar resultado pelo WhatsApp</a>',
-                unsafe_allow_html=True)
+    st.markdown(f'<a class="custom-button" href="{link}" target="_blank">📩 Enviar resultado pelo WhatsApp</a>', unsafe_allow_html=True)
 
     st.markdown("<div style='height:5px;'></div>", unsafe_allow_html=True)
 
-    # ------------------------------
-    # Botão Refazer
-    # ------------------------------
     st.markdown(
         """<a class="custom-button" href="#" onclick="window.location.reload();">🔄 Refazer o formulário</a>""",
         unsafe_allow_html=True
