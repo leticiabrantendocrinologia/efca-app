@@ -16,6 +16,44 @@ st.set_page_config(
 )
 
 # ------------------------------
+# CSS para fundo uniforme e estilo
+# ------------------------------
+st.markdown("""
+<style>
+/* Fundo geral do aplicativo (página inteira) */
+[data-testid="stAppViewContainer"] {
+    background-color: #f1e3d8 !important;
+}
+
+/* Container principal do app (onde ficam widgets, título, formulário) */
+[data-testid="stBlock"] > div {
+    background-color: #f1e3d8 !important;
+}
+
+/* Container interno do Streamlit (blocos / cards) */
+.block-container {
+    background-color: #f1e3d8 !important;
+    padding: 2rem 3rem;
+    border-radius: 12px;
+}
+
+/* Sidebar (se você usar) */
+[data-testid="stSidebar"] {
+    background-color: #f1e3d8 !important;
+}
+
+/* Botões */
+.stButton>button {
+    background-color: #556b2f !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 0.6rem 1.2rem !important;
+    font-size: 1rem !important;
+}
+</style>
+""", unsafe_allow_html=True)
+
+# ------------------------------
 # Banner com logo
 # ------------------------------
 banner_html = """
@@ -31,39 +69,6 @@ banner_html = """
 </div>
 """
 components.html(banner_html, height=300)
-
-# ------------------------------
-# Estilo personalizado (fundo verde + caixas + botões)
-# ------------------------------
-st.markdown("""
-<style>
-/* Fundo geral da página */
-.main {
-    background-color: #b3b795 !important; 
-}
-
-/* Caixa branca onde ficam os widgets */
-.stApp {
-    background-color: #b3b795 !important;
-}
-
-/* Cards e caixas internas padrão do Streamlit */
-.block-container {
-    background-color: #ffffffcc; /* branco com leve transparência */
-    padding: 2rem 3rem;
-    border-radius: 12px;
-}
-
-/* Estilo de botões */
-.stButton>button {
-    background-color: #556b2f !important;
-    color: white !important;
-    border-radius: 8px !important;
-    padding: 0.6rem 1.2rem !important;
-    font-size: 1rem !important;
-}
-</style>
-""", unsafe_allow_html=True)
 
 # ------------------------------
 # Título e descrição
