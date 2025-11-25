@@ -1,4 +1,29 @@
 import streamlit as st
+import streamlit.components.v1 as components
+
+# Configuração da página
+st.set_page_config(layout="wide")
+
+# HTML + CSS para banner full-width com logo
+banner_html = """
+<div style="
+    width: 100%;
+    height: 300px;
+    background-color: #b3b795;
+    background-image: url('logo.png'); 
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+">
+</div>
+"""
+
+# Renderiza o banner
+components.html(banner_html, height=300)
+
+# Título do app abaixo do banner
+st.title("🧠 EFCA – Escala de Fenótipo de Comportamento Alimentar")
+import streamlit as st
 
 # ---- ESTILO PERSONALIZADO (FUNDO VERDE + AJUSTES DE LAYOUT) ----
 st.markdown("""
