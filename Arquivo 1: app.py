@@ -5,6 +5,10 @@ import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
 from datetime import datetime
+from fpdf import FPDF
+from PIL import Image, ImageDraw, ImageFont
+import io
+import urllib.parse
 
 # ------------------------------
 # Configuração da página
@@ -77,11 +81,16 @@ banner_html = """
     background-color: #f1e3d8;
 ">
     <img src="https://raw.githubusercontent.com/leticiabrantendocrinologia/efca-app/bf9fca05f3ee47c7425829cc2ebd26733e93b0d8/logo.png"
-         style="position: absolute; top: 45%; left: 50%; transform: translate(-50%, -45%);
-                height: 220px;">
+         style="
+            position: absolute; 
+            top: 45%; 
+            left: 50%; 
+            transform: translate(-50%, -45%);
+            height: 220px;
+        ">
 </div>
 """
-components.html(banner_html, height=220)
+components.html(banner_html, height=260)
 
 # ------------------------------
 # Título, referência e crédito
@@ -136,9 +145,7 @@ subscales = {
     ]
 }
 
-# Todas as perguntas
 questions = [q for sub in subscales.values() for q in sub]
-
 options = ["Nunca", "Raramente", "Às vezes", "Frequentemente", "Sempre"]
 score_map = {opt: i for i, opt in enumerate(options)}
 responses = {}
@@ -167,26 +174,27 @@ if submitted:
     st.markdown("---")
     st.header("Resultado da EFCA")
 
-    # Calcular resultados por subescala
+    # Resultados por subescala
     subscale_results = {}
     for sub, qs in subscales.items():
         score = 0
         for q in qs:
             s = score_map[responses[q]]
-            # Pergunta 9 invertida
             if q == "Tomo café da manhã todos os dias.":
-                s = (len(options) - 1) - s
+                s = (len(options)-1) - s
             score += s
-        max_subscore = len(qs) * (len(options) - 1)
+        max_subscore = len(qs) * (len(options)-1)
         interpretation = interpret_score(score, max_subscore)
         subscale_results[sub] = (score, interpretation)
 
     # Mostrar resultados
     st.markdown("**Resultados por subescala:**")
-    for sub, (score, interpretation) in subscale_results.items():
-        st.write(f"- {sub}: {score} pontos - {interpretation}")
+    for sub, (score, interp) in subscale_results.items():
+        st.write(f"- {sub}: {score} pontos - {interp}")
 
-    # Salvar respostas
+    # ------------------------------
+    # Salvar respostas em CSV
+    # ------------------------------
     df = pd.DataFrame([{
         "data": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
         **responses
@@ -197,17 +205,74 @@ if submitted:
     except FileNotFoundError:
         new = df
     new.to_csv("efca_respostas.csv", index=False)
-    st.write("✅ Suas respostas foram salvas.")
 
-    # Botão para exportar CSV
+    # Botão CSV
     csv = new.to_csv(index=False).encode('utf-8')
     st.download_button(
-        label="📥 Baixar resultados (CSV)",
+        label="📥 Baixar resultado (CSV)",
         data=csv,
-        file_name="meus_resultados_efca.csv",
+        file_name="resultado_efca.csv",
         mime="text/csv"
     )
 
+    # ------------------------------
+    # Gerar PDF
+    # ------------------------------
+    pdf = FPDF()
+    pdf.add_page()
+    pdf.set_font("Arial", size=12)
+    pdf.cell(200, 10, txt="Resultado da EFCA", ln=True, align='C')
+    pdf.ln(10)
+    for sub, (score, interp) in subscale_results.items():
+        pdf.cell(200, 10, txt=f"{sub}: {score} pontos - {interp}", ln=True)
+
+    pdf_buffer = io.BytesIO()
+    pdf.output(pdf_buffer)
+    pdf_buffer.seek(0)
+
+    st.download_button(
+        label="📥 Baixar resultado (PDF)",
+        data=pdf_buffer,
+        file_name="resultado_efca.pdf",
+        mime="application/pdf"
+    )
+
+    # ------------------------------
+    # Gerar PNG
+    # ------------------------------
+    img = Image.new('RGB', (600, 400), color=(241,227,216))
+    d = ImageDraw.Draw(img)
+    font = ImageFont.load_default()
+    y = 20
+    d.text((20, y), "Resultado da EFCA", fill=(0,0,0))
+    y += 30
+    for sub, (score, interp) in subscale_results.items():
+        d.text((20, y), f"{sub}: {score} pontos - {interp}", fill=(0,0,0))
+        y += 25
+
+    img_buffer = io.BytesIO()
+    img.save(img_buffer, format='PNG')
+    img_buffer.seek(0)
+
+    st.download_button(
+        label="📥 Baixar resultado (PNG)",
+        data=img_buffer,
+        file_name="resultado_efca.png",
+        mime="image/png"
+    )
+
+    # ------------------------------
+    # Link para WhatsApp profissional
+    # ------------------------------
+    whatsapp_number = "5531996515760"
+    message = "Aqui está meu resultado EFCA:\n" + "\n".join([f"{sub}: {score} pontos - {interp}" for sub, (score, interp) in subscale_results.items()])
+    encoded_message = urllib.parse.quote(message)
+    whatsapp_link = f"https://api.whatsapp.com/send?phone={whatsapp_number}&text={encoded_message}"
+
+    st.markdown(f"[📩 Enviar resultado pelo WhatsApp]({whatsapp_link})", unsafe_allow_html=True)
+
+    # ------------------------------
     # Botão para refazer
+    # ------------------------------
     if st.button("Refazer o formulário"):
         st.experimental_rerun()
